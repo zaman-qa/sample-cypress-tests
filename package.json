@@ -1,0 +1,77 @@
+{
+  "name": "cypress-tt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cy:run": "cypress run",
+    "pre-commit": "lint-staged",
+    "run-local": "dotenv-run-script test.env -- cy:run",
+    "open-local": "dotenv-run-script test.env -- cypress:open",
+    "messages": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/messages/*\" ",
+    "leads": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/leads/*\" ", 
+    "leases": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/leases/*\" " ,
+    "lease-management": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/lease_management/*\" " ,
+    "ll_onboarding": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/ll_onboarding/*\" " ,
+    "payments": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/payment/*\" " ,
+    "properties": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/properties/*\" " ,
+    "references": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/references/*\" " ,
+    "esign": "dotenv-run-script test.env -- cy:run --spec  \"cypress/integration/esign/*\" ",
+
+    "merge-reports": "mochawesome-merge cypress/report/mochawesome-report/*.json > cypress/report/full_report.json",
+
+    "prettier": "prettier --write \"cypress/**/*.{ts,js,jsx,tsx,css,scss,json,yml,html,graphql}\"",
+    "prettier:check": "prettier -c \"cypress/**/*.{ts,js,jsx,tsx,css,scss,json,yml,html,graphql}\"",
+    "eslint:check": "eslint \"*.js\" \"cypress/**/*.{ts,js,jsx,tsx}\""
+  },
+  "devDependencies": {
+    "@cypress/react": "^5.12.4",
+    "@cypress/webpack-dev-server": "^1.8.4",
+    "@types/node": "^18.7.6",
+    "cypress": "^9.6.1",
+    "cypress-iframe": "^1.0.1",
+    "eslint": "^7.17.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "html-webpack-plugin": "^4.5.2",
+    "husky": "^4.3.7",
+    "lint-staged": "^10.5.3",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.2.1",
+    "mochawesome-report-generator": "^6.2.0",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0",
+    "typescript": "^4.6.3",
+    "webpack": "^5.72.0",
+    "webpack-dev-server": "^4.8.1"
+  },
+  "lint-staged": {
+    "cypress/**/*.{css,scss,json,yml,html,graphql}": [
+      "prettier -c"
+    ],
+    "cypress/**/*.{ts,js,jsx,tsx}": [
+      "eslint",
+      "prettier -c"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run pre-commit"
+    }
+  },
+  "extends": [
+    "cypress", "plugin:cypress/recommended"
+  ],
+  "dependencies": {
+    "@types/lodash": "^4.14.182",
+    "cypress-file-upload": "^5.0.8",
+    "dotenv": "^16.0.0",
+    "dotenv-extended": "^2.9.0",
+    "dotenv-run-script": "^0.2.0",
+    "kebab-case": "^1.0.1",
+    "lodash": "^4.17.21",
+    "lodash.get": "^4.4.2",
+    "moment": "^2.29.3",
+    "node-fetch": "^2.6.7"
+  }
+}

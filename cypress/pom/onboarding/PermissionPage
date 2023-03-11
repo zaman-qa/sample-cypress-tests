@@ -1,0 +1,24 @@
+export class permission_page {
+  noSmokingInput() {
+    return cy
+    .get('[data-qa="radio-smoking-input-option-no"]')
+    .click()
+  }
+  noPetInput() {
+    return cy
+    .get('[data-qa="radio-pets-input-option-no"]')
+    .click()
+  }
+  limitInput() {
+    return cy
+    .get('[data-qa="radio-have-limit-input-option-no"]')
+    .click()
+  }
+  submitBtn() {
+    return cy
+    .get('[data-qa="property-setup-rules-submit-button"]')
+    .should("be.visible")
+    .click()
+  }
+}
+export default permission_page

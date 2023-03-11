@@ -1,0 +1,14 @@
+{
+  "address": "1 Address rd",
+  "city": "Belgrade",
+  "state": 4,
+  "zip": "75021",
+  "bedroom": "5",
+  "bathroom": "2",
+  "rent": "1000",
+  "deposit": "1200",
+  "firstName": "Tenant",
+  "lastName": "Last",
+  "email": "test+manualtenant@turbotenant.com",
+  "phone": "2025550008"
+}

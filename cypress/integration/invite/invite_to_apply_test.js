@@ -1,0 +1,122 @@
+const fixtureUtils = require('../../utils/fixture-utils');
+const fixturesData = require('../../fixtures/invite_to_apply');
+import loginPage from '../../pom/owner/owner_login_page';
+import leadPage from '../../pom/leads/AddLeadPage';
+import inviteToapply from '../../pom/leads/InviteToApplyPage';
+let ownerFixtures, owner;
+const login_Page = new loginPage();
+const lead_Page = new leadPage();
+const invite_To_Apply = new inviteToapply();
+describe('Invite renter to apply!', () => {
+  before(async () => {
+    const serverResponse = await fixtureUtils.createFixtures(
+      fixturesData.data(),
+    );
+    ownerFixtures = serverResponse.data;
+    console.log(ownerFixtures['owner_1']);
+    owner = serverResponse.data['owner_1'];
+  });
+  beforeEach(() => {
+    cy.visit('https://stefan-owner.turbotenant.com/auth/login');
+    cy.ownerLogout();
+    login_Page.emailInput().type(owner.rawData['email']);
+    login_Page.passwordInput().type(owner.rawData['password']);
+    login_Page.submitBtn().click();
+  });
+  it('Only correct email and mailing address fill', () => {
+    const timestamp = new Date().getTime();
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.onlyEmail();
+    invite_To_Apply.email().type(`test+${timestamp}@turbotenant.com`);
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.inviteBtn();
+    invite_To_Apply.streetAddressInput().type('1 Address rd');
+    invite_To_Apply.cityInput().type('Belgrade');
+    invite_To_Apply.stateInput().select(4);
+    invite_To_Apply.zipInput().type('75021');
+    invite_To_Apply.phoneInput().type('5005550006');
+    invite_To_Apply.finishBtn();
+    invite_To_Apply.doneBtn();
+  });
+  it('Incorrect email', () => {
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.onlyEmail();
+    invite_To_Apply.email().type('testturbotenant.com');
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.inviteBtn();
+    invite_To_Apply.onlyEmail();
+    invite_To_Apply.emailError();
+    invite_To_Apply.cancelBtn();
+  });
+  it('Correct email and all other fields (phone, name).', () => {
+    const timestamp = new Date().getTime();
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.bothBtn();
+    invite_To_Apply.email().type(`test+${timestamp}@turbotenant.com`);
+    invite_To_Apply.phoneInput().type('5005550006');
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.inviteBtn();
+    invite_To_Apply.doneBtn();
+  });
+  it('Invite using invalid phone.', () => {
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.textBtn();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.phoneInput().type('12345');
+    invite_To_Apply.inviteBtn();
+    invite_To_Apply.textBtn();
+    invite_To_Apply.phoneError();
+    invite_To_Apply.cancelBtn();
+  });
+  it('Invite using valid phone.', () => {
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.textBtn();
+    invite_To_Apply.phoneInput().type('5005550006');
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.inviteBtn();
+    invite_To_Apply.doneBtn();
+  });
+  it('Check for created lead.', () => {
+    const timestamp = new Date().getTime();
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.inviteToApply();
+    invite_To_Apply.inviteHeader();
+    invite_To_Apply.firstName().type('John');
+    invite_To_Apply.lastName().type('Doe');
+    invite_To_Apply.onlyEmail();
+    invite_To_Apply.email().type(`test+${timestamp}@turbotenant.com`);
+    invite_To_Apply.rentalProperty();
+    invite_To_Apply.inviteBtn();
+    lead_Page.leadsNavBar().click();
+    lead_Page.leadsHeader();
+    lead_Page.showFilter();
+    lead_Page.searchBox().type(`test+${timestamp}@turbotenant.com`);
+    lead_Page.searchResult();
+  });
+});

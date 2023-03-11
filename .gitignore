@@ -1,0 +1,8 @@
+node_modules
+results
+screenshots/
+videos/
+cypress/.DS_Store
+.DS_Store
+test.env
+yarn-error.log
